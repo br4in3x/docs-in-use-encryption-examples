@@ -5,15 +5,13 @@ import (
 	"encoding/json"
 	"fmt"
 
+	"io/ioutil"
+	"log"
+
 	"go.mongodb.org/mongo-driver/bson"
 	"go.mongodb.org/mongo-driver/bson/primitive"
 	"go.mongodb.org/mongo-driver/mongo"
 	"go.mongodb.org/mongo-driver/mongo/options"
-)
-
-import (
-	"io/ioutil"
-	"log"
 )
 
 func Insert() error {
@@ -86,11 +84,6 @@ func Insert() error {
 					},
 				},
 				{
-					"path":     "medications",
-					"bsonType": "array",
-					"keyId":    dataKeyID2,
-				},
-				{
 					"path":     "patientRecord.ssn",
 					"bsonType": "string",
 					"keyId":    dataKeyID3,
@@ -104,6 +97,16 @@ func Insert() error {
 					"path":     "patientRecord.billing",
 					"bsonType": "object",
 					"keyId":    dataKeyID4,
+				},
+				{
+					"path":     "emails",
+					"bsonType": "array",
+					"keyId":    dataKeyID2,
+					"queries": []bson.M{
+						{
+							"queryType": "equality",
+						},
+					},
 				},
 			},
 		},
@@ -145,6 +148,7 @@ func Insert() error {
 				"number": "4111111111111111",
 			},
 		},
+		"emails": []string{"jon.doe@sampleinc.com", "jdoe@gmail.com"},
 	}
 	if _, err := secureClient.Database(dbName).Collection(collName).InsertOne(context.TODO(), test_patient); err != nil {
 		return fmt.Errorf("InsertOne error: %v", err)
@@ -165,7 +169,9 @@ func Insert() error {
 
 	fmt.Println("Finding a document with encrypted client, searching on an encrypted field")
 	var resultSecure bson.M
-	err = secureClient.Database(dbName).Collection(collName).FindOne(context.TODO(), bson.D{bson.E{"patientRecord.ssn", "987-65-4320"}}).Decode(&resultSecure)
+	err = secureClient.Database(dbName).Collection(collName).FindOne(context.TODO(), bson.D{
+		{"patientRecord.ssn", "987-65-4320"},
+	}).Decode(&resultSecure)
 	if err != nil {
 		panic(err)
 	}

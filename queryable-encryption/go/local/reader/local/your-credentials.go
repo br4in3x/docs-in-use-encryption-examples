@@ -9,7 +9,7 @@ import (
 
 var credentials = map[string]string{
 	// Mongo Paths + URI
-	"MONGODB_URI":     "mongodb://user:JjuHdu5nUF5UKK4@cluster0-shard-00-00.jo9ls.mongodb.net:27017,cluster0-shard-00-01.jo9ls.mongodb.net:27017,cluster0-shard-00-02.jo9ls.mongodb.net:27017/?ssl=true&replicaSet=atlas-1035mz-shard-0&authSource=admin&retryWrites=true&w=majority",
+	"MONGODB_URI":     "mongodb://user:password@dedicated-shard-00-00.jo9ls.mongodb.net:27017,dedicated-shard-00-01.jo9ls.mongodb.net:27017,dedicated-shard-00-02.jo9ls.mongodb.net:27017/?ssl=true&replicaSet=atlas-qqgby8-shard-0&authSource=admin&retryWrites=true&w=majority",
 	"SHARED_LIB_PATH": "/workspaces/docs-in-use-encryption-examples/cryptshared/lib/mongo_crypt_v1.so",
 }
 

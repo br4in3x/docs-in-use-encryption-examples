@@ -5,14 +5,12 @@ import (
 	"fmt"
 	"log"
 
+	"crypto/rand"
+	"io/ioutil"
+
 	"go.mongodb.org/mongo-driver/bson"
 	"go.mongodb.org/mongo-driver/mongo"
 	"go.mongodb.org/mongo-driver/mongo/options"
-)
-
-import (
-	"crypto/rand"
-	"io/ioutil"
 )
 
 // start-local-cmk
@@ -136,11 +134,6 @@ func MakeKey() error {
 					},
 				},
 				{
-					"path":     "medications",
-					"bsonType": "array",
-					"keyId":    dataKeyID2,
-				},
-				{
 					"path":     "patientRecord.ssn",
 					"bsonType": "string",
 					"keyId":    dataKeyID3,
@@ -154,6 +147,16 @@ func MakeKey() error {
 					"path":     "patientRecord.billing",
 					"bsonType": "object",
 					"keyId":    dataKeyID4,
+				},
+				{
+					"path":     "emails",
+					"bsonType": "array",
+					"keyId":    dataKeyID2,
+					"queries": []bson.M{
+						{
+							"queryType": "equality",
+						},
+					},
 				},
 			},
 		},
